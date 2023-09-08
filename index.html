@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ultimate Dice Calculator</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+
+    <img src="images/tattoo_04.jpg" alt="dice" width="150px" height="150px">
+
+    <script>
+        function calculateProbability() {
+            const numDice = parseInt(document.getElementById('numDice').value);
+            const targetNumber = parseInt(document.getElementById('targetNumber').value);
+        
+            if (isNaN(numDice) || isNaN(targetNumber)) {
+                alert("Please enter valid numbers.");
+                return;
+            }
+        
+            const totalOutcomes = Math.pow(6, numDice);
+            let favorableOutcomes = 0;
+        
+            function calculateOutcomes(dice, sum) {
+                if (dice === 0) {
+                    if (sum >= targetNumber) {
+                        favorableOutcomes++;
+                    }
+                    return;
+                }
+                for (let i = 1; i <= 6; i++) {
+                    calculateOutcomes(dice - 1, sum + i);
+                }
+            }
+        
+            calculateOutcomes(numDice, 0);
+            const probability = (favorableOutcomes / totalOutcomes) * 100;
+        
+            document.getElementById('result').innerHTML = `Probability: ${probability.toFixed(2)}%`;
+        }
+        </script>
+        
+    <h1>Are the odds in your favor?</h1>
+    <form id="diceForm">
+        <label for="numDice">Number of Dice:</label>
+        <input type="number" id="numDice" name="numDice" min="1" required>
+        <br>
+        <br>
+        <label for="targetNumber">Number to hit:</label>
+        <input type="number" id="targetNumber" name="targetNumber" min="1" required>
+        <br>
+        <button type="button" onclick="calculateProbability()">Calculate Probability</button>
+    </form>
+    <h2 id="result"></h2>
+
+
+</body>
+</html>
